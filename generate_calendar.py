@@ -38,7 +38,7 @@ def add_offset(day: datetime, offset: int):
     return (day + timedelta(days=offset-1))
 
 start_day = datetime.strptime('2021-01-01', '%Y-%m-%d').date()
-days = [start_day + timedelta(days=i) for i in range(365//2)]
+days = [start_day + timedelta(days=i) for i in range(365)]
 calendar = [day_type(i) for i in days]
 leave_days = 30
 intervals = 3
