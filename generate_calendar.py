@@ -5,11 +5,12 @@ import enum
 holidays = ['2021-01-25',
             '2021-02-15',
             '2021-02-16',
-            '2021-03-26',
-            '2021-03-29',
-            '2021-03-30',
-            '2021-03-31',
-            '2021-04-01',
+            # '2021-03-26',
+            # '2021-03-29',
+            # '2021-03-30',
+            # '2021-03-31',
+            # '2021-04-01',
+            '2021-04-02',
             '2021-04-21',
             '2021-05-01',
             '2021-06-03',
@@ -21,6 +22,7 @@ holidays = ['2021-01-25',
             '2021-12-25']
 
 holidays = set([datetime.strptime(holiday, "%Y-%m-%d").date() for holiday in holidays])
+holidays = set()
 
 def day_type(day: datetime):
     
@@ -43,7 +45,7 @@ calendar = [day_type(i) for i in days]
 leave_days = 30
 intervals = 3
 
-with open('leave.mzd', 'w') as writer:
+with open('leave.dzn', 'w') as writer:
     writer.write(f"calendar = [{','.join(calendar)}];\n")
     writer.write(f"leave_days = {leave_days};\n")
     writer.write(f"intervals = {intervals};\n")
@@ -52,16 +54,18 @@ model = minizinc.Model()
 model.add_file('leave.mzn')
 
 gecode = minizinc.Solver.lookup('gecode')
+# cbc = minizinc.Solver.lookup("cbc")
+
 inst = minizinc.Instance(gecode, model)
 
 inst['leave_days'] = leave_days
 inst['intervals'] = intervals
 inst['calendar'] = calendar
 
-print(f"Início: {datetime.now()}")
-result = inst.solve()
-print(f"Fim: {datetime.now()}")
-
+print(f"Início: {datetime.now().strftime('%H:%M:%S')}")
+result = inst.solve(processes=6)
+print(f"Fim: {datetime.now().strftime('%H:%M:%S')}")
+print("")
 print(result)
 
 leave_days = []

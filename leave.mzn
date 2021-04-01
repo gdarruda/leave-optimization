@@ -37,7 +37,7 @@ var int : total_leisure = sum([calendar[day] != Work \/
                               | day in 1..length(calendar)]);
 
 function var int: extra_leisure_after(int: offset, int: leave_seq) = forall(i in 1..offset)
-                                                                        (if leave[leave_seq, End] + i < length(calendar) 
+                                                                        (if leave[leave_seq, End] + i <= length(calendar) 
                                                                          then calendar[leave[leave_seq, End] + i] != Work 
                                                                          else false endif);
 
@@ -58,9 +58,9 @@ var float : variance = sum(i in 1..intervals-1)(abs(distances[i] - mean_distance
 solve maximize (total_leisure + extra_leisure) * 1000
                + mean_distance - variance;
 
-output ["\(total_leisure)\n",
-        "\(extra_leisure)\n",
-        "\(distances)\n",
-        "\(mean_distance)\n",
-        "\(variance)\n",
+output ["total_leisure = \(total_leisure)\n",
+        "extra_leisure = \(extra_leisure)\n",
+        "distances = \(distances)\n",
+        "mean_distance = \(mean_distance)\n",
+        "variance = \(variance)\n",
         ];
