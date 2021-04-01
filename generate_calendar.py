@@ -43,6 +43,11 @@ calendar = [day_type(i) for i in days]
 leave_days = 30
 intervals = 3
 
+with open('leave.mzd', 'w') as writer:
+    writer.write(f"calendar = [{','.join(calendar)}];\n")
+    writer.write(f"leave_days = {leave_days};\n")
+    writer.write(f"intervals = {intervals};\n")
+
 model = minizinc.Model()
 model.add_file('leave.mzn')
 
