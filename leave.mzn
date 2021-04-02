@@ -54,13 +54,16 @@ array[1..intervals-1] of var int : distances = [leave[i, Start] - leave[i-1, End
 var float : mean_distance = sum(distances) / intervals;
 var float : variance = sum(i in 1..intervals-1)(abs(distances[i] - mean_distance)) / (intervals - 1);
 
+var float : objective = 1000 * 100 * (total_leisure + extra_leisure)
+                        + 100 * mean_distance
+                        - variance;
 
-solve maximize (total_leisure + extra_leisure) * 1000
-               + mean_distance - variance;
+solve maximize objective;
 
 output ["total_leisure = \(total_leisure)\n",
         "extra_leisure = \(extra_leisure)\n",
         "distances = \(distances)\n",
         "mean_distance = \(mean_distance)\n",
         "variance = \(variance)\n",
+        "objective = \(objective)\n"
         ];

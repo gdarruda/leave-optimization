@@ -7,6 +7,7 @@ end_date = '2021-12-31'
 
 leave_days = 30
 intervals = 3
+num_process = 6
 
 holidays = ['2021-01-25',
             '2021-02-15',
@@ -28,6 +29,8 @@ holidays = ['2021-01-25',
             '2021-11-15',
             '2021-11-20',
             '2021-12-25']
+
+holidays = set()
 
 def day_type(day: datetime, 
              holidays: List[datetime]) -> str:
@@ -71,9 +74,11 @@ inst['leave_days'] = leave_days
 inst['intervals'] = intervals
 inst['calendar'] = calendar
 
-print(f"Início: {datetime.now().strftime('%H:%M:%S')}")
-result = inst.solve(processes=6)
-print(f"Fim: {datetime.now().strftime('%H:%M:%S')}")
+start_execution = datetime.now()
+result = inst.solve(processes=num_process)
+end_execution = datetime.now()
+
+print(f"Execution time: {(end_execution - start_execution)}")
 print("")
 print(result)
 
@@ -85,5 +90,5 @@ for seq, interval in enumerate(result['leave']):
     start_day = add_offset(start_date, interval[0])
     end_day = add_offset(start_date, interval[1])
 
-    print(f'Intervalo {seq+1}: {start_day} - {end_day}')
+    print(f'Interval {seq+1}: {start_day} - {end_day}')
 

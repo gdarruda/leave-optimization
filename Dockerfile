@@ -10,4 +10,4 @@ RUN apt update -y  \
 
 RUN pip3 install -r requirements.txt
 
-CMD ["python3", "generate_calendar.py"]
+CMD ["python3", "run.py"]
