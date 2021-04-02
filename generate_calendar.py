@@ -77,8 +77,6 @@ print(f"Fim: {datetime.now().strftime('%H:%M:%S')}")
 print("")
 print(result)
 
-# leave_days = []
-
 def add_offset(day: str, offset: int):
     return (datetime.strptime(day, "%Y-%m-%d").date() + timedelta(days=offset-1))
 
@@ -88,7 +86,4 @@ for seq, interval in enumerate(result['leave']):
     end_day = add_offset(start_date, interval[1])
 
     print(f'Intervalo {seq+1}: {start_day} - {end_day}')
-    
-    # while (start_day <= end_day):
-    #     leave_days.append(start_day)
-    #     start_day = start_day + timedelta(days=1)
+
