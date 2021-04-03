@@ -28,21 +28,28 @@ constraint forall(i in 1..intervals)(calendar[leave[i, Start]] == Work
                                      /\ calendar[leave[i, Start] + 1] == Work
                                      /\ calendar[leave[i, Start] + 2] == Work);
 
-%Garante que não termina um dia antes de outra folga 
-constraint forall(i in 1..intervals)(calendar[leave[i, End] + 1] != Work);
+constraint forall(i in 1..intervals)(if leave[i, End] + 1 <= length(calendar) 
+                                     then calendar[leave[i, End] + 1] == Work 
+                                     else true 
+                                     endif
+                                     /\ 
+                                     if leave[i, End] + 2 <= length(calendar) 
+                                     then calendar[leave[i, End] + 2] != Work 
+                                     else true 
+                                     endif);
 
 var int : total_leisure = sum([calendar[day] != Work \/
                                exists(i in 1..intervals)(day >= leave[i, Start] 
                                                       /\ day <= leave[i, End]) 
                               | day in 1..length(calendar)]);
 
-function var int: extra_leisure_after(int: offset, int: leave_seq) = forall(i in 1..offset)
+function var bool: extra_leisure_after(int: offset, int: leave_seq) = forall(i in 1..offset)
                                                                         (if leave[leave_seq, End] + i <= length(calendar) 
                                                                          then calendar[leave[leave_seq, End] + i] != Work 
                                                                          else false endif);
 
 
-function var int: extra_leisure_before(int: offset, int: leave_seq) = forall(i in 1..offset)
+function var bool: extra_leisure_before(int: offset, int: leave_seq) = forall(i in 1..offset)
                                                                              (if leave[leave_seq, Start] - i >= 1
                                                                               then calendar[leave[leave_seq, Start] - i] != Work 
                                                                               else false endif);

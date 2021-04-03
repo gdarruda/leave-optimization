@@ -9,7 +9,8 @@ leave_days = 30
 intervals = 3
 num_process = 6
 
-holidays = ['2021-01-25',
+holidays = [
+            '2021-01-25',
             '2021-02-15',
             '2021-02-16',
             # Feriado SP
@@ -28,9 +29,11 @@ holidays = ['2021-01-25',
             '2021-11-02',
             '2021-11-15',
             '2021-11-20',
-            '2021-12-25']
+            '2021-12-24',
+            '2021-12-25',
+            '2021-12-31']
 
-holidays = set()
+# holidays = set()
 
 def day_type(day: datetime, 
              holidays: List[datetime]) -> str:
@@ -68,6 +71,7 @@ model = minizinc.Model()
 model.add_file('leave.mzn')
 
 gecode = minizinc.Solver.lookup('gecode')
+# cbc = minizinc.Solver.lookup('cbc')
 
 inst = minizinc.Instance(gecode, model)
 inst['leave_days'] = leave_days
