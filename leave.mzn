@@ -59,7 +59,8 @@ var int : extra_leisure = sum(i in 1..intervals)(sum(j in 1..5)(extra_leisure_af
 
 array[1..intervals-1] of var int : distances = [leave[i, Start] - leave[i-1, End] | i in 2..intervals];
 var float : mean_distance = sum(distances) / intervals;
-var float : variance = sum(i in 1..intervals-1)(abs(distances[i] - mean_distance)) / (intervals - 1);
+var float : variance = if intervals == 1 then 0
+                       else  sum(i in 1..intervals-1)(abs(distances[i] - mean_distance)) / (intervals - 1) endif;
 
 var float : objective = 1000 * 100 * (total_leisure + extra_leisure)
                         + 100 * mean_distance
